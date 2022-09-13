@@ -10,7 +10,7 @@ resource "hcloud_server" "instance" {
   datacenter  = var.hcloud_server_datacenter
 
   # Image is ignored, as we boot into rescue mode, but is a required field
-  image    = "fedora-34"
+  image    = "fedora-36"
   rescue   = "linux64"
   ssh_keys = var.ssh_public_key_name
 
