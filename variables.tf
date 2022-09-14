@@ -30,6 +30,12 @@ variable "ssh_public_key_name" {
   default     = ["My-SSH-Key"]
 }
 
+variable "ssh_private_key_path" {
+  description = "Name of your public key to identify at Hetzner Cloud portal"
+  type        = string
+  default     = "private_key"
+}
+
 variable "tools_butane_version" {
   description = "See https://quay.io/repository/coreos/butane?tag=latest&tab=tags for available versions"
   type        = string
