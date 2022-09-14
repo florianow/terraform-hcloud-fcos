@@ -16,7 +16,7 @@ resource "hcloud_server" "instance" {
 
   connection {
     host    = hcloud_server.instance.ipv4_address
-    private_key = file("flo_hcloud")
+    private_key = file(var.ssh_private_key_path)
     timeout = "5m"
     agent   = true
     
