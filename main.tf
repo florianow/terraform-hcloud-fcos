@@ -16,8 +16,10 @@ resource "hcloud_server" "instance" {
 
   connection {
     host    = hcloud_server.instance.ipv4_address
+    private_key = file("flo_hcloud")
     timeout = "5m"
     agent   = true
+    
     # Root is the available user in rescue mode
     user = "root"
   }
