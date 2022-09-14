@@ -51,8 +51,9 @@ resource "hcloud_server" "instance" {
   provisioner "remote-exec" {
     connection {
       host    = hcloud_server.instance.ipv4_address
+      private_key = file(var.ssh_private_key_path)
       timeout = "2m"
-      agent   = true
+      agent   = false
       # This user is configured in config.yaml
       user = "core"
     }
