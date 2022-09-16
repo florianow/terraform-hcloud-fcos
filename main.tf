@@ -34,29 +34,30 @@ resource "hcloud_server" "instance" {
   provisioner "remote-exec" {
     inline = [
       "set -x",
-      "export COREOS_DISK="https://builds.coreos.fedoraproject.org/prod/streams/testing/builds/34.20210821.2.0/x86_64/fedora-coreos-34.20210821.2.0-metal.x86_64.raw.xz"
-curl -sL $COREOS_DISK | xz -d | dd of=/dev/sda status=progress",
+      "export COREOS_DISK="(var.CoreOS)"
+       curl -sL $COREOS_DISK | xz -d | dd of=/dev/sda status=progress",
       "mount /dev/sda3 /mnt",
       "mkdir /mnt/ignition",
-      
+      "echo "$(var.ignition_yaml)" > /mnt/ignition/config.ign",
+      "unmount /mnt",
       "reboot",
-#    ]
-#  }
+    ]
+  }
 
   # Configure CoreOS after installation
-#  provisioner "remote-exec" {
-#    connection {
-#      host    = hcloud_server.instance.ipv4_address
-#      private_key = file(var.ssh_private_key_path)
-#      timeout = "2m"
-#      agent   = false
-#      # This user is configured in config.yaml
-#      user = "core"
-#    }
-#
-#    inline = [
-#      "sudo hostnamectl set-hostname ${hcloud_server.instance.name}"
-#      # Add additional commands if needed
-#    ]
-#  }
+  provisioner "remote-exec" {
+    connection {
+      host    = hcloud_server.instance.ipv4_address
+      private_key = file(var.ssh_private_key_path)
+      timeout = "2m"
+      agent   = false
+      # This user is configured in config.yaml
+      user = "core"
+    }
+
+    inline = [
+      "sudo hostnamectl set-hostname ${hcloud_server.instance.name}"
+      # Add additional commands if needed
+    ]
+  }
 }
