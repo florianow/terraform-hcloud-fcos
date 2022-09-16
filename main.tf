@@ -39,7 +39,7 @@ resource "hcloud_server" "instance" {
       "mount /dev/sda3 /mnt",
       "mkdir /mnt/ignition",
       "mv /root/config.ign /mnt/ignition/config.ign",
-      "unmount /mnt",
+      "umount /mnt",
       "reboot",
     ]
   }
