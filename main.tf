@@ -31,19 +31,15 @@ resource "hcloud_server" "instance" {
   #}
 
   # Install Fedora CoreOS in rescue mode
-#  provisioner "remote-exec" {
-#    inline = [
-      #"set -x",
-      #"update-alternatives --set iptables /usr/sbin/iptables-legacy",
-      #"update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy",
-      #"apt install -y docker.io",
-      #"apt clean",
-      #"docker run -it --rm -v /root:/pwd -w /pwd quay.io/coreos/butane:${var.tools_butane_version} -o config.ign config.yaml",
-      #"docker run --privileged --rm -v /dev:/dev -v /run/udev:/run/udev -v /root:/data -w /data quay.io/coreos/coreos-installer:release install /dev/sda -p qemu -i config.ign",
-      # Force a sync otherwise install sometimes fails?
-      #"sync",
-      # Exit rescue mode and boot into coreos
-      #"reboot",
+  provisioner "remote-exec" {
+    inline = [
+      "set -x",
+      "export COREOS_DISK="https://builds.coreos.fedoraproject.org/prod/streams/testing/builds/34.20210821.2.0/x86_64/fedora-coreos-34.20210821.2.0-metal.x86_64.raw.xz"
+curl -sL $COREOS_DISK | xz -d | dd of=/dev/sda status=progress",
+      "mount /dev/sda3 /mnt",
+      "mkdir /mnt/ignition",
+      
+      "reboot",
 #    ]
 #  }
 
