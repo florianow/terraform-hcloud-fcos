@@ -25,42 +25,42 @@ resource "hcloud_server" "instance" {
   }
 
   # Copy config.yaml
-  provisioner "file" {
-    source      = var.ignition_yaml
-    destination = "/root/config.yaml"
-  }
+  #provisioner "file" {
+  #  source      = var.ignition_yaml
+  #  destination = "/root/config.yaml"
+  #}
 
   # Install Fedora CoreOS in rescue mode
-  provisioner "remote-exec" {
-    inline = [
-      "set -x",
-      "update-alternatives --set iptables /usr/sbin/iptables-legacy",
-      "update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy",
-      "apt install -y docker.io",
-      "apt clean",
-      "docker run -it --rm -v /root:/pwd -w /pwd quay.io/coreos/butane:${var.tools_butane_version} -o config.ign config.yaml",
-      "docker run --privileged --rm -v /dev:/dev -v /run/udev:/run/udev -v /root:/data -w /data quay.io/coreos/coreos-installer:release install /dev/sda -p qemu -i config.ign",
+#  provisioner "remote-exec" {
+#    inline = [
+      #"set -x",
+      #"update-alternatives --set iptables /usr/sbin/iptables-legacy",
+      #"update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy",
+      #"apt install -y docker.io",
+      #"apt clean",
+      #"docker run -it --rm -v /root:/pwd -w /pwd quay.io/coreos/butane:${var.tools_butane_version} -o config.ign config.yaml",
+      #"docker run --privileged --rm -v /dev:/dev -v /run/udev:/run/udev -v /root:/data -w /data quay.io/coreos/coreos-installer:release install /dev/sda -p qemu -i config.ign",
       # Force a sync otherwise install sometimes fails?
-      "sync",
+      #"sync",
       # Exit rescue mode and boot into coreos
-      "reboot",
-    ]
-  }
+      #"reboot",
+#    ]
+#  }
 
   # Configure CoreOS after installation
-  provisioner "remote-exec" {
-    connection {
-      host    = hcloud_server.instance.ipv4_address
-      private_key = file(var.ssh_private_key_path)
-      timeout = "2m"
-      agent   = false
-      # This user is configured in config.yaml
-      user = "core"
-    }
-
-    inline = [
-      "sudo hostnamectl set-hostname ${hcloud_server.instance.name}"
-      # Add additional commands if needed
-    ]
-  }
-}
+#  provisioner "remote-exec" {
+#    connection {
+#      host    = hcloud_server.instance.ipv4_address
+#      private_key = file(var.ssh_private_key_path)
+#      timeout = "2m"
+#      agent   = false
+#      # This user is configured in config.yaml
+#      user = "core"
+#    }
+#
+#    inline = [
+#      "sudo hostnamectl set-hostname ${hcloud_server.instance.name}"
+#      # Add additional commands if needed
+#    ]
+#  }
+#}
