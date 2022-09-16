@@ -63,4 +63,4 @@ resource "hcloud_server" "instance" {
 #      # Add additional commands if needed
 #    ]
 #  }
-#}
+}
