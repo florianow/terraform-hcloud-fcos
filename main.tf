@@ -26,7 +26,7 @@ resource "hcloud_server" "instance" {
 
   # Copy config.yaml
   provisioner "file" {
-    source      = var.ignition_yaml
+    source      = var.ignition_ign
     destination = "/root/config.ign"
   }
 
@@ -34,7 +34,7 @@ resource "hcloud_server" "instance" {
   provisioner "remote-exec" {
     inline = [
       "set -x",
-      "export COREOS_DISK=${var.CoreOS}",
+      "export COREOS_DISK=https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/${var.coreos_version}/x86_64/fedora-coreos-${var.coreos_version}-metal.x86_64.raw.xz",
       "curl -sL $COREOS_DISK | xz -d | dd of=/dev/sda status=progress",
       "mount /dev/sda3 /mnt",
       "mkdir /mnt/ignition",

@@ -41,3 +41,9 @@ variable "ignition_ign" {
   type        = string
   default     = "config.ign"
 }
+
+variable "coreos_version" {
+  description = "core_os_version"
+  type        = string
+  default     = "36.20220820.3.0"
+}
