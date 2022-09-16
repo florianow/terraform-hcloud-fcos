@@ -3,6 +3,7 @@
 variable "hcloud_token" {
   description = "Hetzner Cloud API Token"
   type        = string
+  default     = "0000000000000000000000000000000000000000000000000000000000000000"
   sensitive   = true
 }
 
