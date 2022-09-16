@@ -9,7 +9,7 @@ variable "hcloud_token" {
 variable "hcloud_server_type" {
   description = "vServer type name, lookup via `hcloud server-type list` Requires at least 3GB of RAM"
   type        = string
-  default     = "cx21"
+  default     = "cx11"
 }
 
 variable "hcloud_server_datacenter" {
@@ -36,14 +36,8 @@ variable "ssh_private_key_path" {
   default     = "private_key"
 }
 
-variable "tools_butane_version" {
-  description = "See https://quay.io/repository/coreos/butane?tag=latest&tab=tags for available versions"
-  type        = string
-  default     = "release"
-}
-
-variable "ignition_yaml" {
+variable "ignition_ign" {
   description = "Ignition configuration that will be passed to butane"
   type        = string
-  default     = "config.yaml"
+  default     = "config.ign"
 }

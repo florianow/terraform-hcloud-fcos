@@ -19,26 +19,26 @@ resource "hcloud_server" "instance" {
     private_key = file(var.ssh_private_key_path)
     timeout = "5m"
     agent   = false
-    
+
     # Root is the available user in rescue mode
     user = "root"
   }
 
   # Copy config.yaml
-  #provisioner "file" {
-  #  source      = var.ignition_yaml
-  #  destination = "/root/config.yaml"
-  #}
+  provisioner "file" {
+    source      = var.ignition_yaml
+    destination = "/root/config.ign"
+  }
 
   # Install Fedora CoreOS in rescue mode
   provisioner "remote-exec" {
     inline = [
       "set -x",
-      "export COREOS_DISK="(var.CoreOS)"
-       curl -sL $COREOS_DISK | xz -d | dd of=/dev/sda status=progress",
+      "export COREOS_DISK=${var.CoreOS}",
+      "curl -sL $COREOS_DISK | xz -d | dd of=/dev/sda status=progress",
       "mount /dev/sda3 /mnt",
       "mkdir /mnt/ignition",
-      "echo "$(var.ignition_yaml)" > /mnt/ignition/config.ign",
+      "mv /root/config.ign /mnt/ignition/config.ign",
       "unmount /mnt",
       "reboot",
     ]
